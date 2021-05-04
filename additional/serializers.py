@@ -28,7 +28,7 @@ class GameCopyrightSerializer(AbstractBaseCopyrightSerializer):
     description = serializers.CharField()
 
     def create(self, validated_data):
-        validated_data.set_default('key', random_key(8))
+        validated_data.setdefault('key', random_key(8))
         return GameCopyright.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
@@ -49,7 +49,7 @@ class SongCopyrightSerializer(AbstractBaseCopyrightSerializer):
     licensed_to = serializers.CharField()
 
     def create(self, validated_data):
-        validated_data.set_default('key', random_key(8))
+        validated_data.setdefault('key', random_key(8))
         return SongCopyright.objects.create(**validated_data)
 
     def update(self, instance, validated_data):

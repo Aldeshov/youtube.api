@@ -4,7 +4,7 @@ from django.db import models
 
 from additional.models import Restrictions
 from applications.types import TYPES
-from content.managers import BaseContentManager
+from content.managers import BaseContentManager, PlaylistManager
 from youtube.settings import CHANNEL_MODEL
 
 
@@ -19,29 +19,30 @@ class AbstractBaseContent(models.Model):
 
     objects = BaseContentManager()
 
+    def report(self):
+        pass
+
     def view_content(self, user):
         if user.is_authenticated:
             self.views += 1
-            return self
-        return None
+        return self
 
     def like_content(self, user, dislike=False, retract=False):
         if user.is_authenticated:
-            code = user.profile.like_content(self.key, dislike, retract)
-            if code == 1:
+            user.profile.like_content(self.key, dislike, retract)
+            if not dislike:
                 if retract:
                     self.likes -= 1
                 else:
                     self.likes += 1
-                return True
+                return self
 
-            elif code == 2:
-                if retract:
-                    self.dislikes -= 1
-                else:
-                    self.dislikes += 1
-                return True
-        return False
+            if retract:
+                self.dislikes -= 1
+            else:
+                self.dislikes += 1
+            return self
+        raise ValueError("User not authenticated")
 
     @property
     def likes_percentage(self):
@@ -74,6 +75,8 @@ class Playlist(models.Model):
     key = models.IntegerField(validators=[MinValueValidator(8), MaxValueValidator(8)], unique=True)
     title = models.CharField(max_length=64)
     owner = models.ForeignKey(to=CHANNEL_MODEL, related_name="playlists", on_delete=models.CASCADE)
+
+    objects = PlaylistManager()
 
 
 class Content(AbstractBaseContent):

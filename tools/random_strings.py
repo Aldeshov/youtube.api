@@ -3,7 +3,7 @@ import string
 
 
 def random_code(length=16):
-    letters = string.ascii_lowercase
+    letters = string.ascii_letters + string.digits
     return ''.join(random.choice(letters) for i in range(length))
 
 
