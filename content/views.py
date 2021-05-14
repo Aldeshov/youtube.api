@@ -35,7 +35,8 @@ def comments(request, code):
         })
         if serializer.is_valid():
             serializer.save()
-            logging.info('User Channel (' + request.user.channel + ') commented Content (' + content[0] + ')')
+            logging.info('User Channel (' + request.user.channel.__str__() +
+                         ') commented Content (' + content[0].__str__() + ')')
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -66,7 +67,8 @@ def my_comment(request, code, comment_id):
             })
             if serializer.is_valid():
                 serializer.save()
-                logging.info('User Channel (' + request.user.channel + ') updated comment on Content (# ' + code + ')')
+                logging.info('User Channel (' + request.user.channel.__str__() +
+                             ') updated comment on Content (# ' + code + ')')
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(status=status.HTTP_404_NOT_FOUND)
@@ -74,7 +76,8 @@ def my_comment(request, code, comment_id):
     elif request.method == 'DELETE':
         comment = Comment.objects.filter(id=comment_id, content__code=code, owner=request.user.channel)
         if comment.exists():
-            logging.info('User Channel (' + request.user.channel + ') deleted comment on Content (# ' + code + ')')
+            logging.info('User Channel (' + request.user.channel.__str__() +
+                         ') deleted comment on Content (# ' + code + ')')
             comment[0].delete()
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_404_NOT_FOUND)
@@ -98,8 +101,8 @@ class VideoContentsViewSet(viewsets.ModelViewSet):
         })
         if serializer.is_valid():
             serializer.save()
-            logging.info('User Channel (' + request.user.channel + ') created Content ('
-                         + serializer.data.get('title') + ')')
+            logging.info('User Channel (' + request.user.channel.__str__() +
+                         ') created Content (' + serializer.data.get('title') + ')')
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -131,7 +134,8 @@ class VideoContentViewSet(viewsets.ViewSet):
             content[0].like_content(request.user.channel,
                                     int(request.query_params.get('dislike')) > 0,
                                     int(request.query_params.get('retract')) > 0)
-            logging.info('User Channel (' + request.user.channel + ') liked the Content (' + content[0] + ')')
+            logging.info('User Channel (' + request.user.channel.__str__() +
+                         ') liked the Content (' + content[0].__str__() + ')')
         except Channel.DoesNotExist:
             Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_200_OK)
@@ -143,7 +147,8 @@ class VideoContentViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         request.user.profile.save_content(content[0], int(request.query_params.get('undo')) > 0)
-        logging.info('User Channel (' + request.user.channel + ') saved the Content (' + content[0] + ')')
+        logging.info('User Channel (' + request.user.channel.__str__() +
+                     ') saved the Content (' + content[0].__str__() + ')')
         return Response(status=status.HTTP_200_OK)
 
 
@@ -189,7 +194,8 @@ class MyVideoContentViewSet(viewsets.ViewSet):
         if not content.exists():
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        logging.info('User Channel (' + request.user.channel + ') deleted the Content (' + content[0] + ')')
+        logging.info('User Channel (' + request.user.channel.__str__() +
+                     ') deleted the Content (' + content[0].__str__() + ')')
         content[0].delete()
         return Response(status=status.HTTP_200_OK)
 
@@ -202,7 +208,7 @@ class PlaylistViewSet(viewsets.ViewSet):
         })
         if serializer.is_valid():
             serializer.save()
-            logging.info('User Channel (' + request.user.channel +
+            logging.info('User Channel (' + request.user.channel.__str__() +
                          ') created the Playlist (' + serializer.data.get('title') + ')')
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -223,7 +229,8 @@ class PlaylistViewSet(viewsets.ViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         request.user.profile.save_playlist(playlist[0], int(request.query_params.get('undo')) > 0)
-        logging.info('User Channel (' + request.user.channel + ') saved the Playlist (' + playlist[0] + ')')
+        logging.info('User Channel (' + request.user.channel.__str__() +
+                     ') saved the Playlist (' + playlist[0].__str__() + ')')
         return Response(status=status.HTTP_200_OK)
 
 
@@ -252,7 +259,8 @@ class MyPlaylistsViewSet(viewsets.ViewSet):
         serializer = PlaylistSerializer(instance=playlist[0], data=request.data)
         if serializer.is_valid():
             serializer.save()
-            logging.info('User Channel (' + request.user.channel + ') updated the Playlist (' + playlist[0] + ')')
+            logging.info('User Channel (' + request.user.channel.__str__() +
+                         ') updated the Playlist (' + playlist[0].__str__() + ')')
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -262,7 +270,8 @@ class MyPlaylistsViewSet(viewsets.ViewSet):
         if not playlist.exists():
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        logging.info('User Channel (' + request.user.channel + ') deleted the Playlist (' + playlist[0] + ')')
+        logging.info('User Channel (' + request.user.channel.__str__() +
+                     ') deleted the Playlist (' + playlist[0].__str__() + ')')
         playlist[0].delete()
         return Response(status=status.HTTP_200_OK)
 
@@ -304,7 +313,7 @@ class MyStatusViewSet(viewsets.ViewSet):
         })
         if serializer.is_valid():
             serializer.save()
-            logging.info('User Channel (' + request.user.channel +
+            logging.info('User Channel (' + request.user.channel.__str__() +
                          ') created Status (' + serializer.data.get('title') + ')')
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -331,7 +340,8 @@ class MyStatusViewSet(viewsets.ViewSet):
         serializer = StatusSerializer(instance=content, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            logging.info('User Channel (' + request.user.channel + ') updated the Status (' + channel.status + ')')
+            logging.info('User Channel (' + request.user.channel.__str__() +
+                         ') updated the Status (' + channel.status.__str__() + ')')
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -343,6 +353,7 @@ class MyStatusViewSet(viewsets.ViewSet):
         except (Channel.DoesNotExist, Status.DoesNotExist):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        logging.info('User Channel (' + request.user.channel + ') deleted the Status (' + channel.status + ')')
+        logging.info('User Channel (' + request.user.channel.__str__() +
+                     ') deleted the Status (' + channel.status.__str__() + ')')
         content.delete()
         return Response(status=status.HTTP_200_OK)

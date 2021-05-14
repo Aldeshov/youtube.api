@@ -15,7 +15,10 @@ def content_deleted(sender, instance, **kwargs):
 
 @receiver(pre_save, sender=VideoContent)
 def content_changed(sender, instance, **kwargs):
-    old_video = sender.objects.get(id=instance.id).video
+    objects = sender.objects.filter(id=instance.id)
+    if not objects.exists():
+        return
+    old_video = objects[0].video
     if old_video and old_video != instance.video:
         file_delete(old_video)
 
@@ -28,6 +31,9 @@ def status_deleted(sender, instance, **kwargs):
 
 @receiver(pre_save, sender=Status)
 def status_changed(sender, instance, **kwargs):
-    old_video = sender.objects.get(id=instance.id).short_video
+    objects = sender.objects.filter(id=instance.id)
+    if not objects.exists():
+        return
+    old_video = objects[0].short_video
     if old_video and old_video != instance.short_video:
         file_delete(old_video)

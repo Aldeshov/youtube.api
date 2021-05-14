@@ -13,6 +13,9 @@ def channel_deleted(sender, instance, **kwargs):
 
 @receiver(pre_save, sender=Channel)
 def channel_changed(sender, instance, **kwargs):
-    old_avatar = sender.objects.get(id=instance.id).avatar
+    objects = sender.objects.filter(id=instance.id)
+    if not objects.exists():
+        return
+    old_avatar = objects[0].avatar
     if old_avatar and old_avatar != instance.avatar:
         file_delete(old_avatar)
