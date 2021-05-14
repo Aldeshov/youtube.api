@@ -2,5 +2,5 @@
 /.idea
 /venv
 /media/**
-logs/**
+logs/
 __pycache__
