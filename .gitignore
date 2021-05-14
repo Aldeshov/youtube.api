@@ -1,8 +1,6 @@
 /.git
 /.idea
 /venv
-/media/
-logs/
+/media/**
+logs/**
 __pycache__
-migrations/
-!__init__.py

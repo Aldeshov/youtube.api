@@ -1,0 +1,8 @@
+INFO | 2021-05-14 01:31:58,949 | C:\Users\Azat\youtube\applications\views.py changed, reloading.
+INFO | 2021-05-14 01:32:11,706 | User User 2 B subscribed to Channel (First Channel ever)
+INFO | 2021-05-14 01:33:18,793 | C:\Users\Azat\youtube\applications\views.py changed, reloading.
+ERROR | 2021-05-14 01:33:24,789 | Internal Server Error: /app/channels/me
+INFO | 2021-05-14 01:33:53,387 | C:\Users\Azat\youtube\applications\views.py changed, reloading.
+INFO | 2021-05-14 01:33:55,555 | Channel (New Channel) has been updated
+INFO | 2021-05-14 01:35:10,017 | C:\Users\Azat\youtube\applications\views.py changed, reloading.
+INFO | 2021-05-14 01:38:43,057 | C:\Users\Azat\youtube\authentication\views.py changed, reloading.
