@@ -1,24 +1,8 @@
 from rest_framework import serializers
 
-from applications.models import Profile
 from authentication.models import User
 
-
-class ProfileSerializer(serializers.ModelSerializer):
-    """
-    Used for only get Information about User profile.
-    For Updating Information use functions in Profile() class.
-    """
-    is_private = serializers.BooleanField(read_only=True)
-    saved_playlists = serializers.ListField(read_only=True)
-    saved_contents = serializers.ListField(read_only=True)
-    liked = serializers.ListField(read_only=True)
-    disliked = serializers.ListField(read_only=True)
-    subscribed = serializers.ListField(read_only=True)
-
-    class Meta:
-        model = Profile
-        fields = '__all__'
+NOT_ALLOWED_PASSWORDS = ['password', '12345678', 'qwertyuiop', '11111111', '00000000', 'asdfghjk', ]
 
 
 class BaseUserSerializer(serializers.Serializer):
@@ -43,7 +27,13 @@ class BaseUserSerializer(serializers.Serializer):
 
 class CreateUserSerializer(BaseUserSerializer):
     email = serializers.EmailField(write_only=True)
-    password = serializers.CharField(write_only=True)
+    password = serializers.CharField(write_only=True, min_length=8, max_length=16)
+
+    @classmethod
+    def validate_password(cls, value):
+        if value in NOT_ALLOWED_PASSWORDS:
+            raise serializers.ValidationError('Password is too insecure, use another')
+        return value
 
     def create(self, validated_data):
         return User.objects.create_user(

@@ -1,10 +1,11 @@
 from django.contrib.postgres.fields import ArrayField
-from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
+from tools.random_generate import random_key
 
-class AbstractBaseCopyright(models.Model):
-    key = models.IntegerField(validators=[MinValueValidator(8), MaxValueValidator(8)], unique=True)
+
+class BaseCopyright(models.Model):
+    key = models.IntegerField(default=random_key, primary_key=True)
     is_allowable = models.BooleanField(default=True)
     accept_monetization = models.BooleanField(default=True)
     tags = ArrayField(
@@ -13,24 +14,26 @@ class AbstractBaseCopyright(models.Model):
         blank=True
     )
 
+    class Meta:
+        abstract = True
 
-class GameCopyright(AbstractBaseCopyright):
+
+class GameCopyright(BaseCopyright):
     name = models.CharField(max_length=64)
     description = models.TextField()
 
 
-class SongCopyright(AbstractBaseCopyright):
+class SongCopyright(BaseCopyright):
     song = models.CharField(max_length=64)
     artist = models.CharField(max_length=64)
     album = models.CharField(max_length=64)
     licensed_to = models.TextField()
 
 
-class Restrictions(models.Model):
+class Copyrights(models.Model):
     is_private = models.BooleanField(default=False)
     is_adult_content = models.BooleanField(default=False)
     is_kids_content = models.BooleanField(default=False)
 
-    class Meta:
-        verbose_name = 'Content Restrictions'
-        verbose_name_plural = 'Contents Restrictions'
+    song_copyrights = models.ManyToManyField(SongCopyright, blank=True)
+    game_copyrights = models.ManyToManyField(GameCopyright, blank=True)

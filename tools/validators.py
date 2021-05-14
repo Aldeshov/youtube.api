@@ -1,13 +1,20 @@
+import os
+
 from django.core.exceptions import ValidationError
 
-from content.models import Content, Playlist
+MAX_FILE_SIZE = 1073741824
+ALLOWED_EXTENSIONS = ['.mp4', '.3gp']
 
 
-def content_validation(value):
-    if not Content.objects.is_exists(value):
-        raise ValidationError('Content does not exists')
+def validate_size(value):
+    if value.size > MAX_FILE_SIZE:
+        raise ValidationError(f'Maximum file size is: {MAX_FILE_SIZE} Bytes')
 
 
-def playlist_validation(value):
-    if not Playlist.objects.is_exists(value):
-        raise ValidationError('Playlist does not exist')
+def validate_extension(value):
+    split_ext = os.path.splitext(value.name)
+
+    if len(split_ext) > 1:
+        ext = split_ext[1]
+        if ext.lower() not in ALLOWED_EXTENSIONS:
+            raise ValidationError(f'File not allowed, valid extensions: {ALLOWED_EXTENSIONS}')

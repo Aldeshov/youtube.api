@@ -1,21 +1,33 @@
+import logging
+
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from rest_framework import viewsets, status
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from authentication.models import User
-from authentication.serializers import CreateUserSerializer, BaseUserSerializer, UpdateUserSerializer, ProfileSerializer
+from authentication.serializers import CreateUserSerializer, BaseUserSerializer, UpdateUserSerializer
+from content.serializers import ProfileSerializer
+
+logging.basicConfig(
+    level=logging.INFO,
+    filename='authentication/logs/app.log',
+    filemode='a',
+    format='%(levelname)s | %(asctime)s | %(message)s',
+)
 
 
 class UserViewSet(viewsets.ViewSet):
+    permission_classes = (AllowAny,)
 
     @classmethod
     def create(cls, request):
         serializer = CreateUserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
+            logging.info('User (' + serializer.data.get('full_name') + ') has been created')
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -34,6 +46,7 @@ class CurrentUser(APIView):
             if form.is_valid():
                 user = form.save()
                 update_session_auth_hash(request, user)  # Important!
+                logging.info('User (' + request.user.full_name + ') changed password')
                 return Response(form.data, status=status.HTTP_200_OK)
             else:
                 return Response(form.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -41,11 +54,13 @@ class CurrentUser(APIView):
         serializer = UpdateUserSerializer(instance=request.user, data=request.data)
         if serializer.is_valid():
             serializer.save()
+            logging.info('User (' + serializer.data.get('full_name') + ') has been updated')
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @classmethod
     def delete(cls, request):
+        logging.info('User (' + request.user.full_name + ') has been deleted')
         request.user.delete()
         return Response(status=status.HTTP_200_OK)
 

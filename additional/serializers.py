@@ -1,14 +1,23 @@
 from rest_framework import serializers
 
-from additional.models import GameCopyright, SongCopyright, Restrictions
-from tools.random_strings import random_key
+from additional.models import GameCopyright, SongCopyright, Copyrights
 
 
-class AbstractBaseCopyrightSerializer(serializers.Serializer):
+class BaseCopyrightSerializer(serializers.Serializer):
     key = serializers.IntegerField(read_only=True)
     is_allowable = serializers.BooleanField()
     accept_monetization = serializers.BooleanField()
     tags = serializers.ListField()
+
+    def validate_accept_monetization(self, value):
+        if value and not self.is_allowable:
+            raise serializers.ValidationError('Copyright not allowable for monetization')
+        return value
+
+    def validate_is_allowable(self, value):
+        if value is False and self.accept_monetization:
+            raise serializers.ValidationError('Copyright first need to decline monetization')
+        return value
 
     def create(self, validated_data):
         """
@@ -23,12 +32,11 @@ class AbstractBaseCopyrightSerializer(serializers.Serializer):
         return None
 
 
-class GameCopyrightSerializer(AbstractBaseCopyrightSerializer):
+class GameCopyrightSerializer(BaseCopyrightSerializer):
     name = serializers.CharField()
     description = serializers.CharField()
 
     def create(self, validated_data):
-        validated_data.setdefault('key', random_key(8))
         return GameCopyright.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
@@ -42,14 +50,13 @@ class GameCopyrightSerializer(AbstractBaseCopyrightSerializer):
         return instance
 
 
-class SongCopyrightSerializer(AbstractBaseCopyrightSerializer):
+class SongCopyrightSerializer(BaseCopyrightSerializer):
     song = serializers.CharField()
     artist = serializers.CharField()
     album = serializers.CharField()
     licensed_to = serializers.CharField()
 
     def create(self, validated_data):
-        validated_data.setdefault('key', random_key(8))
         return SongCopyright.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
@@ -65,7 +72,20 @@ class SongCopyrightSerializer(AbstractBaseCopyrightSerializer):
         return instance
 
 
-class RestrictionsSerializer(serializers.ModelSerializer):
+class CopyrightsSerializer(serializers.ModelSerializer):
+    is_adult_content = serializers.BooleanField()
+    is_kids_content = serializers.BooleanField()
+
     class Meta:
-        model = Restrictions
+        model = Copyrights
         fields = '__all__'
+
+    def validate_is_adult_content(self, value):
+        if value and self.is_kids_content:
+            raise serializers.ValidationError('Cannot be True both kids & adults content')
+        return value
+
+    def validate_is_kids_content(self, value):
+        if value and self.is_adult_content:
+            raise serializers.ValidationError('Cannot be True both kids & adults content')
+        return value
