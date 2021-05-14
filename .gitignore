@@ -2,6 +2,7 @@
 /.idea
 /venv
 /media
-logs
+logs/
 __pycache__
-00*.py
+*/migrations/*
+!__init__.py
