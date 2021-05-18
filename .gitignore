@@ -4,5 +4,6 @@
 /media/**
 logs/
 __pycache__
-!__init__.py
-migrations/
+migrations/*
+!migrations/__init__.py
+
