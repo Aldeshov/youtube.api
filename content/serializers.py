@@ -9,6 +9,7 @@ from content.models import VideoContent, Comment, Status, Playlist
 class BaseContentSerializer(serializers.Serializer):
     code = serializers.CharField(read_only=True)
     title = serializers.CharField()
+    created_on = serializers.DateTimeField(read_only=True)
     views = serializers.ReadOnlyField()
     likes = serializers.ReadOnlyField()
     dislikes = serializers.ReadOnlyField()
@@ -28,8 +29,10 @@ class BaseContentSerializer(serializers.Serializer):
 
 class VideoContentSerializer(BaseContentSerializer):
     video = serializers.FileField()
+    preview = serializers.ImageField()
     type = serializers.IntegerField(min_value=1, max_value=6)
     description = serializers.CharField(min_length=4)
+    on_channel = ChannelSerializer(read_only=True)
     copyrights = CopyrightsSerializer(read_only=True)
 
     def create(self, validated_data):

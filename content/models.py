@@ -11,6 +11,7 @@ from youtube.settings import CHANNEL_MODEL
 class BaseContent(models.Model):
     code = models.CharField(max_length=16, default=random_code, unique=True)
     title = models.CharField(max_length=64)
+    created_on = models.DateTimeField(auto_now_add=True)
     _viewed = models.ManyToManyField(to=CHANNEL_MODEL, related_name='%(app_label)s_%(class)s_views', blank=True)
     _liked = models.ManyToManyField(to=CHANNEL_MODEL, related_name='%(app_label)s_%(class)s_likes', blank=True)
     _disliked = models.ManyToManyField(to=CHANNEL_MODEL, related_name='%(app_label)s_%(class)s_dislikes', blank=True)
@@ -71,6 +72,7 @@ class BaseContent(models.Model):
 
 class VideoContent(BaseContent):
     video = models.FileField(upload_to='contents', validators=[validate_size, validate_extension])
+    preview = models.ImageField(upload_to='previews/')
     type = models.PositiveSmallIntegerField(choices=TYPES, blank=True)
     description = models.TextField()
     on_channel = models.ForeignKey(to=CHANNEL_MODEL, related_name="contents", on_delete=models.CASCADE)

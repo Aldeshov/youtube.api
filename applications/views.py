@@ -6,13 +6,9 @@ from rest_framework.response import Response
 
 from applications.models import Channel
 from applications.serializers import ChannelSerializer
+from django.utils.translation import ugettext_lazy as _
 
-logging.basicConfig(
-    level=logging.INFO,
-    filename='applications/logs/app.log',
-    filemode='a',
-    format='%(levelname)s | %(asctime)s | %(message)s',
-)
+logger = logging.getLogger(__name__)
 
 
 def my_channel(request):
@@ -36,7 +32,7 @@ class ChannelsViewSet(mixins.ListModelMixin,
         serializer = ChannelSerializer(data=request.data, context={"user": request.user})
         if serializer.is_valid():
             serializer.save()
-            logging.info('Channel (' + serializer.data.get('name') + ') has been created')
+            logger.info('Channel (' + _(serializer.data.get('name')) + ') has been created')
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -63,7 +59,7 @@ class ChannelViewSet(viewsets.GenericViewSet):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
         request.user.profile.subscribe(filtered_channels[0], int(request.query_params.get('undo')) > 0)
-        logging.info(f'User {request.user.full_name} subscribed to Channel (' + filtered_channels[0].name + ')')
+        logger.info(f'User {request.user.full_name} subscribed to Channel (' + filtered_channels[0].name + ')')
         return Response(status=status.HTTP_200_OK)
 
 
@@ -86,7 +82,7 @@ class MyChannelViewSet(viewsets.GenericViewSet):
             serializer = ChannelSerializer(instance=channel, data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                logging.info('Channel (' + serializer.data.get('name') + ') has been updated')
+                logger.info('Channel (' + serializer.data.get('name') + ') has been updated')
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -95,7 +91,7 @@ class MyChannelViewSet(viewsets.GenericViewSet):
     def destroy(cls, request):
         channel = my_channel(request)
         if channel:
-            logging.info('Channel (' + channel.name + ') has been deleted')
+            logger.info('Channel (' + channel.name + ') has been deleted')
             channel.delete()
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)

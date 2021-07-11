@@ -26,7 +26,9 @@ SECRET_KEY = 'django-insecure-b(5$#ye2w$)p=0p(j_75hf2^vkrp^h!pgwaa2ex3$m2p@4b@^&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '192.168.43.120'
+]
 
 INTERNAL_IPS = [
     'localhost',
@@ -100,8 +102,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'youtube',
-        'USER': 'django',
-        'PASSWORD': 'django',
+        'USER': 'azat',
+        'PASSWORD': 'azat',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -168,4 +170,66 @@ REST_FRAMEWORK = {
 
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=12)
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s > %(asctime)s: %(message)s',
+        },
+        'simple': {
+            'format': '%(levelname)s -- %(message)s'
+        }
+    },
+    'handlers': {
+        'additional_file_handler': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'additional/activity.log',
+            'formatter': 'verbose'
+        },
+        'applications_file_handler': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'applications/activity.log',
+            'formatter': 'verbose'
+        },
+        'content_file_handler': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'content/activity.log',
+            'formatter': 'verbose'
+        },
+        'authentication_file_handler': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'authentication/activity.log',
+            'formatter': 'verbose'
+        },
+        'console_handler': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        }
+    },
+    'loggers': {
+        'additional': {
+            'handlers': ['additional_file_handler', 'console_handler'],
+            'level': 'DEBUG',
+        },
+        'applications': {
+            'handlers': ['applications_file_handler', 'console_handler'],
+            'level': 'DEBUG',
+        },
+        'content': {
+            'handlers': ['content_file_handler', 'console_handler'],
+            'level': 'DEBUG',
+        },
+        'authentication': {
+            'handlers': ['authentication_file_handler', 'console_handler'],
+            'level': 'DEBUG',
+        },
+    },
 }

@@ -7,12 +7,7 @@ from rest_framework.response import Response
 from additional.models import GameCopyright, SongCopyright
 from additional.serializers import GameCopyrightSerializer, SongCopyrightSerializer
 
-logging.basicConfig(
-    level=logging.INFO,
-    filename='additional/logs/app.log',
-    filemode='a',
-    format='%(levelname)s | %(asctime)s | %(message)s',
-)
+logger = logging.getLogger(__name__)
 
 
 class GameCopyrightViewSet(mixins.ListModelMixin,
@@ -59,7 +54,7 @@ class GameCopyrightItem(viewsets.ViewSet):
             serializer = GameCopyrightSerializer(instance=game_copyright, data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                logging.info('Game Copyright object (' + game_copyright.name + ') has been updated')
+                logger.info('Game Copyright object (' + game_copyright.name + ') has been updated')
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(status=status.HTTP_404_NOT_FOUND)
@@ -71,7 +66,7 @@ class GameCopyrightItem(viewsets.ViewSet):
 
         game_copyright = cls.get_copyright(key)
         if game_copyright:
-            logging.info('Game Copyright object (' + game_copyright.name + ') has been deleted')
+            logger.info('Game Copyright object (' + game_copyright.name + ') has been deleted')
             game_copyright.delete()
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_404_NOT_FOUND)
@@ -104,7 +99,7 @@ class SongCopyrightItem(viewsets.ViewSet):
             serializer = SongCopyrightSerializer(instance=song_copyright, data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                logging.info('Song Copyright object (' + song_copyright.song + ') has been updated')
+                logger.info('Song Copyright object (' + song_copyright.song + ') has been updated')
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(status=status.HTTP_404_NOT_FOUND)
@@ -116,7 +111,7 @@ class SongCopyrightItem(viewsets.ViewSet):
 
         song_copyright = cls.get_copyright(key)
         if song_copyright:
-            logging.info('Song Copyright object (' + song_copyright.song + ') has been deleted')
+            logger.info('Song Copyright object (' + song_copyright.song + ') has been deleted')
             song_copyright.delete()
             return Response(status=status.HTTP_200_OK)
         return Response(status=status.HTTP_404_NOT_FOUND)
