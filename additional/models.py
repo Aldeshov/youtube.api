@@ -37,3 +37,7 @@ class Copyrights(models.Model):
 
     song_copyrights = models.ManyToManyField(SongCopyright, blank=True)
     game_copyrights = models.ManyToManyField(GameCopyright, blank=True)
+
+    class Meta:
+        verbose_name = "Content's copyrights"
+        verbose_name_plural = "All Contents' copyrights"

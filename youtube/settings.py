@@ -16,7 +16,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -27,12 +26,15 @@ SECRET_KEY = 'django-insecure-b(5$#ye2w$)p=0p(j_75hf2^vkrp^h!pgwaa2ex3$m2p@4b@^&
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '192.168.43.120'
+    '192.168.8.103',  # Temporary local IP Address
+    '127.0.0.1',
+    'localhost'
 ]
 
 INTERNAL_IPS = [
-    'localhost',
-    '127.0.0.1'
+    '192.168.8.103',  # Temporary local IP Address
+    '127.0.0.1',
+    'localhost'
 ]
 
 # Application definition
@@ -94,7 +96,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'youtube.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
@@ -108,7 +109,6 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -128,7 +128,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -141,7 +140,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
