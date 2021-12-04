@@ -3,7 +3,7 @@ import os
 from django.core.exceptions import ValidationError
 
 MAX_FILE_SIZE = 1073741824
-ALLOWED_EXTENSIONS = ['.mp4', '.3gp']
+ALLOWED_EXTENSIONS = ['.mp4', '.3gp', '.mkv']
 
 
 def validate_size(value):

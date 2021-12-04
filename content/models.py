@@ -38,6 +38,13 @@ class BaseContent(models.Model):
         self._liked.add(channel)
         return
 
+    def is_channel_liked(self, channel):
+        if channel in self._liked.all():
+            return 1
+        elif channel in self._disliked.all():
+            return 2
+        return 0
+
     @property
     def views(self):
         return len(self._viewed.all())

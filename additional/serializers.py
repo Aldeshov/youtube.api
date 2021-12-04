@@ -76,6 +76,9 @@ class CopyrightsSerializer(serializers.ModelSerializer):
     is_adult_content = serializers.BooleanField()
     is_kids_content = serializers.BooleanField()
 
+    song_copyrights = SongCopyrightSerializer(read_only=True, many=True)
+    game_copyrights = GameCopyrightSerializer(read_only=True, many=True)
+
     class Meta:
         model = Copyrights
         fields = '__all__'

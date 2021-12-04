@@ -26,13 +26,13 @@ SECRET_KEY = 'django-insecure-b(5$#ye2w$)p=0p(j_75hf2^vkrp^h!pgwaa2ex3$m2p@4b@^&
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '192.168.8.103',  # Temporary local IP Address
+    '192.168.199.120',  # Temporary local IP Address
     '127.0.0.1',
     'localhost'
 ]
 
 INTERNAL_IPS = [
-    '192.168.8.103',  # Temporary local IP Address
+    '192.168.199.120',  # Temporary local IP Address
     '127.0.0.1',
     'localhost'
 ]
@@ -186,25 +186,29 @@ LOGGING = {
             'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': 'additional/activity.log',
-            'formatter': 'verbose'
+            'formatter': 'verbose',
+            'encoding': 'utf-8'
         },
         'applications_file_handler': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': 'applications/activity.log',
-            'formatter': 'verbose'
+            'formatter': 'verbose',
+            'encoding': 'utf-8'
         },
         'content_file_handler': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': 'content/activity.log',
-            'formatter': 'verbose'
+            'formatter': 'verbose',
+            'encoding': 'utf-8'
         },
         'authentication_file_handler': {
             'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': 'authentication/activity.log',
-            'formatter': 'verbose'
+            'formatter': 'verbose',
+            'encoding': 'utf-8'
         },
         'console_handler': {
             'level': 'DEBUG',

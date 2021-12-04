@@ -23,6 +23,7 @@ urlpatterns = [
             VideoContentViewSet.as_view({'put': 'save'})),
     re_path(r'^contents/(?P<code>\w+)/like(?:dislike=(?P<dislike>\d+)&retract=(?P<retract>\d+))?$',
             VideoContentViewSet.as_view({'put': 'like'})),
+    path('contents/<str:code>/like/status', VideoContentViewSet.as_view({'get': 'like_status'})),
     path('contents/<str:code>/comments', comments),
     path('contents/<str:code>/comments/me', my_comments),
     path('contents/<str:code>/comments/me/<int:comment_id>', my_comment),

@@ -62,6 +62,18 @@ class ChannelViewSet(viewsets.GenericViewSet):
         logger.info(f'User {request.user.full_name} subscribed to Channel (' + filtered_channels[0].name + ')')
         return Response(status=status.HTTP_200_OK)
 
+    @classmethod
+    def subscribe_status(cls, request, code):
+        filtered_channels = Channel.objects.filter(code=code)
+        if not filtered_channels.exists():
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        if filtered_channels[0].owner == request.user:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        subscribe_status = request.user.profile.is_subscribed(filtered_channels[0])
+        return Response({"status": subscribe_status}, status=status.HTTP_200_OK)
+
 
 class MyChannelViewSet(viewsets.GenericViewSet):
     permission_classes = (IsAuthenticated,)

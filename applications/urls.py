@@ -32,5 +32,6 @@ urlpatterns = [
     )),
     path('channels/<str:code>/status', StatusViewSet.as_view({'get': 'retrieve'})),
     re_path(r'^channels/(?P<code>\w+)/subscribe(?:undo=(?P<undo>\d+))?$',
-            ChannelViewSet.as_view({'put': 'subscribe'}))
+            ChannelViewSet.as_view({'put': 'subscribe'})),
+    path('channels/<str:code>/subscribe/status', ChannelViewSet.as_view({'get': 'subscribe_status'}))
 ]

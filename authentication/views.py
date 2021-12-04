@@ -24,7 +24,7 @@ class UserViewSet(viewsets.ViewSet):
             serializer.save()
             logger.info('User (' + serializer.data.get('full_name') + ') has been created')
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CurrentUser(APIView):

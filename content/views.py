@@ -132,8 +132,20 @@ class VideoContentViewSet(viewsets.ViewSet):
             logger.info('User Channel (' + request.user.channel.__str__() +
                         ') liked the Content (' + content[0].__str__() + ')')
         except Channel.DoesNotExist:
-            Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         return Response(status=status.HTTP_200_OK)
+
+    @classmethod
+    def like_status(cls, request, code):
+        content = VideoContent.objects.filter(code=code)
+        if not content.exists():
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            like_status = content[0].is_channel_liked(request.user.channel)
+            return Response({"status": like_status}, status=status.HTTP_200_OK)
+        except Channel.DoesNotExist:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
     @classmethod
     def save(cls, request, code):

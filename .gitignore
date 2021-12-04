@@ -7,3 +7,5 @@ __pycache__
 */migrations/*
 !*/migrations/__init__.py
 */activity.log
+
+server.cmd

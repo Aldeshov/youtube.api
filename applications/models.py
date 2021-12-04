@@ -54,3 +54,6 @@ class Profile(models.Model):
 
         self.subscribed.add(channel)
         return
+
+    def is_subscribed(self, channel):
+        return channel in self.subscribed.all()
