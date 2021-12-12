@@ -1,5 +1,5 @@
-# YouTube API `beta v1.0`
-This Django project presents simple (only with basic functionalities) API for YouTube platform
+# YouTube API
+This Django (educational) project presents simple (only with basic functionalities) API for YouTube platform
 
 ---
 
