@@ -1,0 +1,1682 @@
+{
+	"info": {
+		"_postman_id": "8b80fa68-d583-40e4-9f38-1e7a1416c800",
+		"name": "YouTube API",
+		"description": "Simple YouTube API requests\n\n[ADMIN] = Requires Super User privilege. Requests should contain header:\n    'Authorization' : 'JWT {{ADMIN_TOKEN}}'\nfor it.\nToken can be get from Login -> Admin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User Authentication",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "User [ADMIN]",
+							"request": {
+								"auth": {
+									"type": "apikey",
+									"apikey": [
+										{
+											"key": "value",
+											"value": "JWT {{ADMIN_TOKEN}}",
+											"type": "string"
+										},
+										{
+											"key": "key",
+											"value": "Authorization",
+											"type": "string"
+										},
+										{
+											"key": "in",
+											"value": "header",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/auth/users/1",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"auth",
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User -> Me",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/auth/users/me",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"auth",
+										"users",
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User -> Me -> Edit",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "first_name",
+											"value": "Rodney",
+											"type": "text"
+										},
+										{
+											"key": "last_name",
+											"value": "Howard",
+											"type": "text"
+										},
+										{
+											"key": "avatar",
+											"type": "file",
+											"src": []
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/auth/users/me",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"auth",
+										"users",
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User -> Me -> Delete",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"postman.setEnvironmentVariable(\"TOKEN\", '')"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/auth/users/me",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"auth",
+										"users",
+										"me"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Profile",
+					"item": [
+						{
+							"name": "Profile",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/auth/users/1/profile",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"auth",
+										"users",
+										"1",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Profile -> Me",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/auth/users/me/profile",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"auth",
+										"users",
+										"me",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = JSON.parse(responseBody)\r",
+									"postman.setEnvironmentVariable(\"TOKEN\", data.token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "admin@admin.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{my_password}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/login",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login -> Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = JSON.parse(responseBody)\r",
+									"postman.setEnvironmentVariable(\"ADMIN_TOKEN\", data.token)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "admin@admin.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "NUZPW4uyzRt8ao",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/login",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "kyle.bryant@example.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Password",
+									"type": "text"
+								},
+								{
+									"key": "first_name",
+									"value": "Kyle",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "Bryant",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/register",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Applications",
+			"item": [
+				{
+					"name": "Channels",
+					"item": [
+						{
+							"name": "Channel",
+							"item": [
+								{
+									"name": "Channel",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/app/channels/UvGMFXgHCy1LwphB",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"app",
+												"channels",
+												"UvGMFXgHCy1LwphB"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Channel -> Subscribe",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/app/channels/{{channel_code}}/subscribe?undo=0",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"app",
+												"channels",
+												"{{channel_code}}",
+												"subscribe"
+											],
+											"query": [
+												{
+													"key": "undo",
+													"value": "0",
+													"description": "1 (undo) / 0 (subscribe)"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Channel -> Me",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/app/channels/me",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"app",
+												"channels",
+												"me"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Channel -> Me -> Edit",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "name",
+													"value": "SlivkiShow",
+													"type": "text"
+												},
+												{
+													"key": "avatar",
+													"type": "file",
+													"src": "/C:/Users/Azat/Desktop/unnamed.jpg"
+												},
+												{
+													"key": "description",
+													"value": "SlivkiShow - это интересные и познавательные видео каждую неделю.\nСотрудничество и предложения - slivkivideos@gmail.com",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/app/channels/me",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"app",
+												"channels",
+												"me"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Channel -> Me -> Delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/app/channels/me",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"app",
+												"channels",
+												"me"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Channels",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/app/channels",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"app",
+										"channels"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Channels -> Create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Channel",
+											"type": "text"
+										},
+										{
+											"key": "avatar",
+											"type": "file",
+											"src": []
+										},
+										{
+											"key": "description",
+											"value": "Desc",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/app/channels",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"app",
+										"channels"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Contents",
+					"item": [
+						{
+							"name": "Content",
+							"item": [
+								{
+									"name": "Content",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/app/contents/{{content_code}}",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"app",
+												"contents",
+												"{{content_code}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Content -> Like / Dislike",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/app/contents/{{content_code}}/like?dislike=0&retract=0",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"app",
+												"contents",
+												"{{content_code}}",
+												"like"
+											],
+											"query": [
+												{
+													"key": "dislike",
+													"value": "0",
+													"description": "1 (dislike) / 0 (like)"
+												},
+												{
+													"key": "retract",
+													"value": "0",
+													"description": "1 (retract) / 0 (do nothing)"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Content -> Save",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/app/contents/{{content_code}}/save?undo=0",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"app",
+												"contents",
+												"{{content_code}}",
+												"save"
+											],
+											"query": [
+												{
+													"key": "undo",
+													"value": "0",
+													"description": "1 (undo) / 0 (save)"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Content -> Me",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/app/contents/me/{{content_code}}",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"app",
+												"contents",
+												"me",
+												"{{content_code}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Content -> Me -> Edit",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "title",
+													"value": "NEW Title",
+													"type": "text"
+												},
+												{
+													"key": "video",
+													"type": "file",
+													"src": []
+												},
+												{
+													"key": "type",
+													"value": "3",
+													"type": "text"
+												},
+												{
+													"key": "description",
+													"value": "Description",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/app/contents/me/{{content_code}}",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"app",
+												"contents",
+												"me",
+												"{{content_code}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Content -> Me -> Delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/app/contents/me/{{content_code}}",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"app",
+												"contents",
+												"me",
+												"{{content_code}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Contents",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/app/contents",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"app",
+										"contents"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Contents -> Add",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "video",
+											"type": "file",
+											"src": []
+										},
+										{
+											"key": "preview",
+											"type": "file",
+											"src": []
+										},
+										{
+											"key": "title",
+											"value": "Content Title",
+											"type": "text"
+										},
+										{
+											"key": "type",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Desc",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/app/contents",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"app",
+										"contents"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Contents -> Me",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/app/contents/me",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"app",
+										"contents",
+										"me"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Comments",
+					"item": [
+						{
+							"name": "Comment",
+							"item": [
+								{
+									"name": "Comment -> Me",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/app/contents/t5u18i3fSGx3rDBw/comments/me/3",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"app",
+												"contents",
+												"t5u18i3fSGx3rDBw",
+												"comments",
+												"me",
+												"3"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Comment -> Me -> Edit",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "text",
+													"value": "UPDATED: comment",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/app/contents/nlhKjdVaS3uJjFtb/comments/me/2",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"app",
+												"contents",
+												"nlhKjdVaS3uJjFtb",
+												"comments",
+												"me",
+												"2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Comment -> Me -> Delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/app/contents/nlhKjdVaS3uJjFtb/comments/me/2",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"app",
+												"contents",
+												"nlhKjdVaS3uJjFtb",
+												"comments",
+												"me",
+												"2"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Comments",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/app/contents/t5u18i3fSGx3rDBw/comments",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"app",
+										"contents",
+										"t5u18i3fSGx3rDBw",
+										"comments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Comments -> Add",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "text",
+											"value": "My new comment on YouTube Video Content",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/app/contents/{{content_code}}/comments",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"app",
+										"contents",
+										"{{content_code}}",
+										"comments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Comments -> Me",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/app/contents/nlhKjdVaS3uJjFtb/comments/me",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"app",
+										"contents",
+										"nlhKjdVaS3uJjFtb",
+										"comments",
+										"me"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Playlists",
+					"item": [
+						{
+							"name": "Playlist",
+							"item": [
+								{
+									"name": "Playlist",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/app/playlists/25067562",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"app",
+												"playlists",
+												"25067562"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Playlist -> Save",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/app/playlists/25067562/save?undo=0",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"app",
+												"playlists",
+												"25067562",
+												"save"
+											],
+											"query": [
+												{
+													"key": "undo",
+													"value": "0",
+													"description": "1 (undo) / 0 (save)"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Playlist -> Me",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/app/playlists/me/25067562",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"app",
+												"playlists",
+												"me",
+												"25067562"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Playlist -> Me -> Edit",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "title",
+													"value": "Very New",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/app/playlists/me/25067562",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"app",
+												"playlists",
+												"me",
+												"25067562"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Playlist -> Me -> Delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/app/playlists/me/36034117",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"app",
+												"playlists",
+												"me",
+												"36034117"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Playlists -> Add",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "playlist",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/app/playlists",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"app",
+										"playlists"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Playlists -> Me",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/app/playlists/me",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"app",
+										"playlists",
+										"me"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Status",
+					"item": [
+						{
+							"name": "Status",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/app/channels/t5u18i3fSGx3rDBw/status",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"app",
+										"channels",
+										"t5u18i3fSGx3rDBw",
+										"status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Status -> Create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "My videos",
+											"type": "text"
+										},
+										{
+											"key": "short_video",
+											"type": "file",
+											"src": "/C:/Users/Azat/Desktop/short_video.mp4"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/app/channels/me/status",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"app",
+										"channels",
+										"me",
+										"status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Status -> Me",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/app/channels/me/status",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"app",
+										"channels",
+										"me",
+										"status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Status -> Me -> Edit",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "status",
+											"type": "text"
+										},
+										{
+											"key": "short_video",
+											"type": "file",
+											"src": "/C:/Users/Azat/Desktop/short_video.mp4"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/app/channels/me/status",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"app",
+										"channels",
+										"me",
+										"status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Status -> Me -> Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/app/channels/me/status",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"app",
+										"channels",
+										"me",
+										"status"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Additional [ADMIN]",
+			"item": [
+				{
+					"name": "Game Copyrights",
+					"item": [
+						{
+							"name": "Game Copyright",
+							"item": [
+								{
+									"name": "Game Copyright",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/addon/copyrights/game/66965702",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"addon",
+												"copyrights",
+												"game",
+												"66965702"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Game Copyright -> Edit",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "is_allowable",
+													"value": "False",
+													"type": "text"
+												},
+												{
+													"key": "accept_monetization",
+													"value": "True",
+													"type": "text"
+												},
+												{
+													"key": "tags",
+													"value": "ONLINE, FPS",
+													"type": "text"
+												},
+												{
+													"key": "name",
+													"value": "Online Game",
+													"type": "text"
+												},
+												{
+													"key": "description",
+													"value": "Simple Online Game Copyright (c)",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/addon/copyrights/game/66965702",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"addon",
+												"copyrights",
+												"game",
+												"66965702"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Game Copyright -> Delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/addon/copyrights/game/61662356",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"addon",
+												"copyrights",
+												"game",
+												"61662356"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Game Copyrights",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/addon/copyrights/game",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"addon",
+										"copyrights",
+										"game"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Game Copyrights -> Add",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "is_allowable",
+											"value": "True",
+											"type": "text"
+										},
+										{
+											"key": "accept_monetization",
+											"value": "False",
+											"type": "text"
+										},
+										{
+											"key": "tags",
+											"value": "ONLINE, SANDBOX",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "Sandbox",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Simple Sandbox Game Copyright",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/addon/copyrights/game",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"addon",
+										"copyrights",
+										"game"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Song Copyrights",
+					"item": [
+						{
+							"name": "Song Copyright",
+							"item": [
+								{
+									"name": "Song Copyright",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/addon/copyrights/song/63659358",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"addon",
+												"copyrights",
+												"song",
+												"63659358"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Song Copyright -> Edit",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "is_allowable",
+													"value": "False",
+													"type": "text"
+												},
+												{
+													"key": "accept_monetization",
+													"value": "True",
+													"type": "text"
+												},
+												{
+													"key": "tags",
+													"value": "POP, K-POP",
+													"type": "text"
+												},
+												{
+													"key": "song",
+													"value": "Just some song",
+													"type": "text"
+												},
+												{
+													"key": "artist",
+													"value": "Song Artist",
+													"type": "text"
+												},
+												{
+													"key": "album",
+													"value": "Song Allbum",
+													"type": "text"
+												},
+												{
+													"key": "licensed_to",
+													"value": "Copyright Center (c)",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{BASE_URL}}/addon/copyrights/song/63659358",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"addon",
+												"copyrights",
+												"song",
+												"63659358"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Song Copyright -> Delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{BASE_URL}}/addon/copyrights/song/17127516",
+											"host": [
+												"{{BASE_URL}}"
+											],
+											"path": [
+												"addon",
+												"copyrights",
+												"song",
+												"17127516"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Song Copyrights",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/addon/copyrights/song",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"addon",
+										"copyrights",
+										"song"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Song Copyrights -> Add",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "is_allowable",
+											"value": "True",
+											"type": "text"
+										},
+										{
+											"key": "accept_monetization",
+											"value": "False",
+											"type": "text"
+										},
+										{
+											"key": "tags",
+											"value": "ROCK, POP",
+											"type": "text"
+										},
+										{
+											"key": "song",
+											"value": "Song",
+											"type": "text"
+										},
+										{
+											"key": "artist",
+											"value": "Artist",
+											"type": "text"
+										},
+										{
+											"key": "album",
+											"value": "Album",
+											"type": "text"
+										},
+										{
+											"key": "licensed_to",
+											"value": "Copyright Center (c)",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/addon/copyrights/song",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"addon",
+										"copyrights",
+										"song"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "apikey",
+				"apikey": [
+					{
+						"key": "value",
+						"value": "JWT {{ADMIN_TOKEN}}",
+						"type": "string"
+					},
+					{
+						"key": "key",
+						"value": "Authorization",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			},
+			{
+				"key": "value",
+				"value": "JWT {{TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
